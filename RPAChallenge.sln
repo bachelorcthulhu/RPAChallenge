@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPAChallenge", "RPAChallenge\RPAChallenge.csproj", "{3D8B38A2-359B-4F31-9EF7-6A85F608F835}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D8B38A2-359B-4F31-9EF7-6A85F608F835}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D8B38A2-359B-4F31-9EF7-6A85F608F835}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D8B38A2-359B-4F31-9EF7-6A85F608F835}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D8B38A2-359B-4F31-9EF7-6A85F608F835}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
