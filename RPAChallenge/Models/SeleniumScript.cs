@@ -37,31 +37,6 @@ public class SeleniumScript
             _ => new EdgeDriver()
         };
     }
-    
-    public SeleniumScript(string url, Browser browser, List<string> fieldsToFill)
-    {
-        _url = url;
-        _employees = new List<Employee>();
-        _fieldsToFill = new List<string>(fieldsToFill);
-
-        switch (browser)
-        {
-            case Browser.Firefox:
-                this._driver = new FirefoxDriver();
-                break;
-            case Browser.Chrome:
-                this._driver = new ChromeDriver();
-                break;
-            case Browser.Edge:
-                this._driver = new EdgeDriver();
-                break;
-            default:
-                this._driver = new EdgeDriver();
-                break;
-        }
-        
-        _driver.Navigate().GoToUrl(_url);
-    }
 
     private void FillField(string fieldName, string inputData, IList<IWebElement> inputs)
     {
@@ -75,25 +50,26 @@ public class SeleniumScript
         }
     }
 
-    private void FillForm()
+    private void FillForm(Employee employee)
     {
         IList<IWebElement> inputs = _driver.FindElements(By.TagName("input"));
+        List<string> strEmployee = employee.MakeList();
 
-        foreach (var field in _fieldsToFill)
+        for (int i = 0; i < _fieldsToFill.Count; i++)
         {
-            FillField(field, "sad", inputs);
+            FillField(_fieldsToFill[i], strEmployee[i], inputs);
         }
-        
+
         _driver.FindElement(By.CssSelector("input.btn")).Click();
     }
 
     public void FillForms()
     {
-        _driver.FindElement(By.CssSelector("button.waves-effect")).Click();
+        _driver.FindElement(By.XPath("button.waves-effect")).Click();
         
         for (var i = 0; i < _numberOfRounds; i++)
         {
-            FillForm();
+            FillForm(_employees[i]);
         }
     }
 }

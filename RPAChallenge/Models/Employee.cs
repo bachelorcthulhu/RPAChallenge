@@ -1,59 +1,29 @@
+using CsvHelper.Configuration.Attributes;
+
 namespace RPAChallenge.Models;
 
 public class Employee
 {
-    private string FirstName { get; }
-    private string LastName { get; }
-    private string CompanyName { get; }
-    private string RoleInCompany { get; }
-    private string Address { get; }
-    private string Email { get; }
-    private int PhoneNumber { get; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string CompanyName { get; set; }
+    public string RoleInCompany { get; set; }
+    public string Address { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
 
-    public Employee(string firstName, string lastName, string companyName,
-        string roleInCompany, string address, string email, int phoneNumber)
+    public void PrintEmployee()
     {
-        FirstName = firstName;
-        LastName = lastName;
-        CompanyName = companyName;
-        RoleInCompany = roleInCompany;
-        Address = address;
-        Email = email;
-        PhoneNumber = phoneNumber;
+        Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", FirstName, LastName, CompanyName,
+        RoleInCompany, Address, Email, PhoneNumber);
     }
 
-    public string GetFirstName()
+    public List<string> MakeList()
     {
-        return FirstName;
+        return new List<string>
+        {
+            FirstName, LastName, CompanyName, RoleInCompany, Address, Email, PhoneNumber
+        };
     }
 
-    public string GetLastName()
-    {
-        return LastName;
-    }
-
-    public string GetCompanyName()
-    {
-        return CompanyName;
-    }
-
-    public string GetRoleInCompany()
-    {
-        return RoleInCompany;
-    }
-
-    public string GetAddress()
-    {
-        return Address;
-    }
-
-    public string GetEmail()
-    {
-        return Email;
-    }
-
-    public int GetPhoneNumber()
-    {
-        return PhoneNumber;
-    }
 }

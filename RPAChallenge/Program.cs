@@ -1,8 +1,17 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using RPAChallenge.Models;
 
-using RPAChallenge.Models;
+List<Employee> employees = readCSV.ReadData("C://Users//bache//Downloads//challenge.csv");
+List<List<string>> listOfEmployees = new List<List<string>>();
 
-Console.WriteLine("Hello, World!");
+foreach (var employee in employees)
+{
+    employee.PrintEmployee();
+}
+
+foreach (var employee in employees)
+{
+    listOfEmployees.Add(employee.MakeList());
+}
 
 List<string> fields = new List<string>
 {
@@ -10,6 +19,7 @@ List<string> fields = new List<string>
     "labelAddress", "labelEmail","labelPhone"
 };
 
-SeleniumScript RPAScript = new SeleniumScript("https://www.rpachallenge.com/", Browser.Firefox, fields);
-RPAScript.FillForms();
-Console.WriteLine();
+SeleniumScript rpaScript = new SeleniumScript("https://www.rpachallenge.com/", Browser.Firefox, employees, fields);
+rpaScript.FillForms();
+
+Console.ReadLine();
