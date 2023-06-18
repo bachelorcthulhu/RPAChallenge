@@ -14,34 +14,82 @@ public enum Browser
 
 public class SeleniumScript
 {
-    private string Url { get; }
-    private IWebDriver Driver { get; }
-    private List<Employee> Employees { get; }
+    private readonly string _url;
+    private IWebDriver _driver;
+    private readonly List<Employee> _employees;
+    private readonly List<string> _fieldsToFill;
+    /// <summary>
+    /// Единственные вшитые данные, количество раундов на RPA
+    /// </summary>
+    private readonly int _numberOfRounds = 10;
 
-    public SeleniumScript(string url, Browser browser, List<Employee> employees)
+    public SeleniumScript(string url, Browser browser, List<Employee> employees, List<string> fieldsToFill)
     {
-        Url = url;
-        Employees = new List<Employee>(employees);
+        _url = url;
+        _employees = new List<Employee>(employees);
+        _fieldsToFill = new List<string>(fieldsToFill);
 
-        switch (browser)
+        this._driver = browser switch
         {
-            case Browser.Firefox:
-                this.Driver = new FirefoxDriver();
-                break;
-            case Browser.Chrome:
-                this.Driver = new ChromeDriver();
-                break;
-            case Browser.Edge:
-                this.Driver = new EdgeDriver();
-                break;
-            default:
-                this.Driver = new EdgeDriver();
-                break;
+            Browser.Firefox => new FirefoxDriver(),
+            Browser.Chrome => new ChromeDriver(),
+            Browser.Edge => new EdgeDriver(),
+            _ => new EdgeDriver()
+        };
+    }
+
+    private void FillField(string fieldName, string inputData, IList<IWebElement> inputs)
+    {
+        foreach (IWebElement input in inputs)
+        {
+            if (input.GetAttribute("outerHTML").Contains(fieldName))
+            {
+                input.SendKeys(inputData);
+                return;
+            }
         }
     }
 
-    public void FillForm()
+    private void FillForm(Employee employee)
     {
+        IList<IWebElement> inputs = _driver.FindElements(By.TagName("input"));
+        List<string> strEmployee = employee.MakeList();
+
+        for (int i = 0; i < _fieldsToFill.Count; i++)
+        {
+            FillField(_fieldsToFill[i], strEmployee[i], inputs);
+        }
+
+        _driver.FindElement(By.CssSelector("input.btn")).Click();
+    }
+
+    public void FillForms()
+    {
+        _driver.FindElement(By.CssSelector("button.waves-effect")).Click();
         
+        for (var i = 0; i < _numberOfRounds; i++)
+        {
+            FillForm(_employees[i]);
+        }
+    }
+
+    /// <summary>
+    /// Меняет драйвер, но не закрывает уже открышийся браузер
+    /// </summary>
+    /// <param name="browser"></param>
+    public void ChangeDriver(Browser browser)
+    {
+        this._driver = browser switch
+        {
+            Browser.Firefox => new FirefoxDriver(),
+            Browser.Chrome => new ChromeDriver(),
+            Browser.Edge => new EdgeDriver(),
+            _ => new EdgeDriver()
+        };
+    }
+
+    public void OpenSite()
+    {
+        _driver.Navigate().GoToUrl(_url);
     }
 }
