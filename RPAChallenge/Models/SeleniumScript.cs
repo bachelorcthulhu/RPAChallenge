@@ -15,8 +15,8 @@ public enum Browser
 public class SeleniumScript
 {
     private readonly string _url;
-    private readonly IWebDriver _driver;
-    private List<Employee> _employees;
+    private IWebDriver _driver;
+    private readonly List<Employee> _employees;
     private readonly List<string> _fieldsToFill;
     /// <summary>
     /// Единственные вшитые данные, количество раундов на RPA
@@ -65,11 +65,31 @@ public class SeleniumScript
 
     public void FillForms()
     {
-        _driver.FindElement(By.XPath("button.waves-effect")).Click();
+        _driver.FindElement(By.CssSelector("button.waves-effect")).Click();
         
         for (var i = 0; i < _numberOfRounds; i++)
         {
             FillForm(_employees[i]);
         }
+    }
+
+    /// <summary>
+    /// Меняет драйвер, но не закрывает уже открышийся браузер
+    /// </summary>
+    /// <param name="browser"></param>
+    public void ChangeDriver(Browser browser)
+    {
+        this._driver = browser switch
+        {
+            Browser.Firefox => new FirefoxDriver(),
+            Browser.Chrome => new ChromeDriver(),
+            Browser.Edge => new EdgeDriver(),
+            _ => new EdgeDriver()
+        };
+    }
+
+    public void OpenSite()
+    {
+        _driver.Navigate().GoToUrl(_url);
     }
 }
